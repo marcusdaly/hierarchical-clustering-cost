@@ -16,12 +16,13 @@ import sys
 logging.basicConfig(level=logging.INFO)
 
 
-def find_optimal(G: nx.Graph, cost: Callable[[nx.Graph, tl.Tree], float]) -> Tuple[tl.Tree, float]:
+def find_optimal(G: nx.Graph, cost: Callable[[nx.Graph, tl.Tree], float]) -> Tuple[List[tl.Tree], float]:
     remaining = list(G.nodes)
     all_trees = get_all_trees(remaining)
     costs = [(tree, cost(G, tree)) for tree in all_trees]
     minimum = min(costs, key=lambda x: x[1]) # TODO return all minimum trees.
-    return minimum
+    all_min_trees = [item[0] for item in costs if item[1] == minimum[1]]
+    return all_min_trees, minimum[1]
 
 def get_all_trees(remaining: List[int]) -> List[tl.Tree]:
 

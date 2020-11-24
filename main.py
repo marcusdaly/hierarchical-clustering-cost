@@ -17,20 +17,23 @@ def main():
     G = nx.Graph()
     G.add_nodes_from(range(num_nodes))
 
-    tree, cost = find_optimal(G, depth_cost)
+    trees, cost = find_optimal(G, depth_cost)
     print(f"Min Cost Depth: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
-    tree, cost = find_optimal(G, dasgupta_cost)
+    trees, cost = find_optimal(G, dasgupta_cost)
     print(f"Min Cost Dasgupta: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
-    tree, cost = find_optimal(G, our_cost)
+    trees, cost = find_optimal(G, our_cost)
     print(f"Min Cost Us: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
     # From Dasgupta Paper
     num_nodes = int(sys.argv[1])
@@ -38,20 +41,23 @@ def main():
     G = nx.Graph()
     G.add_edges_from([(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4), (3, 5), (5, 6)])
 
-    tree, cost = find_optimal(G, depth_cost)
+    trees, cost = find_optimal(G, depth_cost)
     print(f"Min Cost Depth: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
-    tree, cost = find_optimal(G, dasgupta_cost)
+    trees, cost = find_optimal(G, dasgupta_cost)
     print(f"Min Cost Dasgupta: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
-    tree, cost = find_optimal(G, our_cost)
+    trees, cost = find_optimal(G, our_cost)
     print(f"Min Cost Us: {cost}")
-    print("Tree:")
-    tree.show()
+    print(f"Min Trees ({len(trees)})")
+    for tree in trees:
+        tree.show()
 
 
 if __name__ == '__main__':
