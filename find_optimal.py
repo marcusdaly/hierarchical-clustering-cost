@@ -3,7 +3,7 @@ import treelib as tl
 
 import itertools
 
-from typing import Callable, List
+from typing import Callable, List, Tuple
 
 import logging
 from logging import debug
@@ -16,9 +16,12 @@ import sys
 logging.basicConfig(level=logging.INFO)
 
 
-def find_optimal(G: nx.Graph, cost: Callable[[nx.Graph], float]) -> tl.Tree:
+def find_optimal(G: nx.Graph, cost: Callable[[nx.Graph, tl.Tree], float]) -> Tuple[tl.Tree, float]:
     remaining = list(G.nodes)
-    return get_all_trees(remaining)
+    all_trees = get_all_trees(remaining)
+    costs = [(tree, cost(G, tree)) for tree in all_trees]
+    minimum = min(costs, key=lambda x: x[1]) # TODO return all minimum trees.
+    return minimum
 
 def get_all_trees(remaining: List[int]) -> List[tl.Tree]:
 
@@ -27,7 +30,7 @@ def get_all_trees(remaining: List[int]) -> List[tl.Tree]:
 
 
     T = tl.Tree()
-    T.create_node("root", -1)
+    T.create_node(-1, -1)
 
     currrent_parent = -1
     next_internal_node = -2
