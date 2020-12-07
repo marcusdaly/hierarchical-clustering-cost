@@ -3,13 +3,16 @@ import networkx as nx
 
 # note: currently unweighted.
 def our_cost(G: nx.Graph, T: tl.Tree) -> float:
+    T_leaves = [n.tag for n in T.leaves()]
     cost = 0
     for edge in G.edges:
-        lca = get_lca(T, edge[0], edge[1])
-        subtree = T.subtree(lca)
-        subtree_leaves = subtree.leaves()
-        for leaf in subtree_leaves:
-            cost += subtree.level(leaf.identifier)
+        # only look at edges in this tree.
+        if edge[0] in T_leaves and edge[1] in T_leaves:
+            lca = get_lca(T, edge[0], edge[1])
+            subtree = T.subtree(lca)
+            subtree_leaves = subtree.leaves()
+            for leaf in subtree_leaves:
+                cost += subtree.level(leaf.identifier)
     return cost
 
 def get_lca(T: tl.Tree, x: int, y: int) -> int:

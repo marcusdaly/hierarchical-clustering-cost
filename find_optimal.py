@@ -9,9 +9,6 @@ import logging
 from logging import debug
 
 import sys
-# debug(sys.getrecursionlimit())
-
-# sys.setrecursionlimit(2000)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -31,7 +28,7 @@ def get_all_trees(remaining: List[int]) -> List[tl.Tree]:
 
 
     T = tl.Tree()
-    T.create_node(-1, -1)
+    T.create_node(tag=-1, identifier=-1)
 
     currrent_parent = -1
     next_internal_node = -2
@@ -66,7 +63,7 @@ def search_num_leaves(n_total: int, remaining: List[int], T: List[tl.Tree], curr
 
                 # add the leaves
                 for leaf in leaves:
-                    t.create_node(leaf, leaf, parent=currrent_parent)
+                    t.create_node(tag=leaf, identifier=leaf, parent=currrent_parent)
 
                 # remaining leaves must be below some internal nodes.
                 new_remaining = [r for r in remaining if r not in leaves]
@@ -114,7 +111,7 @@ def search_num_internal_nodes(
         debug("creating")
         # t.show()
         for _ in range(num_internal_nodes):
-            t.create_node(this_next_internal_node, this_next_internal_node, parent=currrent_parent)
+            t.create_node(tag=-1, identifier=this_next_internal_node, parent=currrent_parent)
             internal_nodes.append(this_next_internal_node)
             this_next_internal_node -= 1
 
