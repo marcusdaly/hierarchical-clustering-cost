@@ -10,20 +10,21 @@ def compare_graph(graph_type: str, num_nodes: int, **kwargs):
 
     G = get_graph_by_type(graph_type=graph_type, num_nodes=num_nodes, **kwargs)
 
-    trees, cost = find_optimal(G, our_cost)
-    print(f"Min Cost Us: {cost}")
+    trees, opt_cost = find_optimal(G, our_cost)
+    print(f"Min Cost Us: {opt_cost}")
     print(f"Min Trees ({len(trees)})")
     for tree in trees:
         tree.show()
 
-    tree, cost = find_approx(G)
-    print(f"Min Cost Us: {cost}")
+    tree, approx_cost = find_approx(G)
+    print(f"Min Cost Us: {approx_cost}")
     print(f"Min Tree:")
     tree.show()
 
-    print(G.nodes())
-
     labels = {n: n for n in G.nodes()}
+
+    print(f"Optimal Cost: {opt_cost}")
+    print(f"Algorithm Cost: {approx_cost}")
 
     nx.draw(G, labels=labels)
     plt.show()
@@ -83,3 +84,5 @@ def get_graph_by_type(graph_type: str, num_nodes: int, **kwargs) -> nx.Graph:
         return nx.full_rary_tree(n=num_nodes, **kwargs)
     elif graph_type == "Planted Partition":
         return nx.planted_partition_graph(**kwargs)
+    elif graph_type == "Line":
+        return nx.path_graph(n=num_nodes, **kwargs)

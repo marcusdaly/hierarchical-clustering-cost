@@ -95,12 +95,13 @@ def main():
     #
     # print(f"min: {i_min}, {j_min}, {k_min} = {costs[i_min,j_min,k_min]}")
 
-    num_groups = 2
-    per_group = 3
-    # compare_graphs(graph_type="Planted Partition", num_nodes=num_groups*per_group, l=num_groups, k=per_group, p_in=0.9, p_out=0.1)
-    compare_graphs(graph_type="E-R", num_nodes=5, p=0.5)
-    compare_graphs(graph_type="Random Tree", num_nodes=5)
-    # compare_graph()
+    # num_groups = 2
+    # per_group = 3
+    num_nodes = 6
+    # compare_graphs(graph_type="Planted Partition", num_nodes=num_nodes, l=num_groups, k=per_group, p_in=0.9, p_out=0.3)
+    # compare_graphs(graph_type="E-R", num_nodes=num_nodes, p=0.5)
+    # compare_graphs(graph_type="Random Tree", num_nodes=num_nodes)
+    compare_graph(graph_type="Line", num_nodes=num_nodes)
     # compare_tree()
 
 
