@@ -58,7 +58,7 @@ def find_approx(G: nx.Graph) -> Tuple[tl.Tree, float]:
         c_len = costs.shape[0]
 
         # add absurdly high cost to upper diagonal to not consider these.
-        costs = costs + (1e15 * np.triu(np.ones((c_len, c_len)))).reshape((c_len, c_len, 1))
+        costs = costs + (1e20 * np.triu(np.ones((c_len, c_len)))).reshape((c_len, c_len, 1))
 
         # find cost-minimizing pair and merge type
         min_pair_index_flat = np.argmin(costs) # This gives index of flattened.
