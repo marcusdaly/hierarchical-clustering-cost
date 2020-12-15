@@ -2,6 +2,8 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 
+from typing import List
+
 from find_optimal import find_optimal
 from find_approx import find_approx
 from our_cost import our_cost
@@ -75,6 +77,63 @@ def compare_graphs(graph_type: str, num_nodes: int, **kwargs):
     plt.legend(loc="upper right")
     plt.show()
 
+def compare_graph_means(graph_type: str, node_range: List[int], **kwargs):
+    num_graphs = 100
+    range_len = len(node_range)
+
+    optimal_costs = np.zeros((range_len, num_graphs,))
+    approx_costs = np.zeros((range_len, num_graphs,))
+
+    for i, n in enumerate(node_range):
+        for j in range(num_graphs):
+
+            G = get_graph_by_type(graph_type=graph_type, num_nodes=n, **kwargs)
+
+            trees, cost = find_optimal(G, our_cost)
+            print(f"Min Cost Us: {cost}")
+            print(f"Min Trees ({len(trees)})")
+            for tree in trees:
+                tree.show()
+            optimal_costs[i, j] = cost
+
+            tree, cost = find_approx(G)
+            print(f"Min Cost Us: {cost}")
+            print(f"Min Tree:")
+            tree.show()
+            approx_costs[i, j] = cost
+
+    mean_opts = np.zeros((range_len,))
+    std_opts = np.zeros((range_len,))
+    mean_approxs = np.zeros((range_len,))
+    std_approxs = np.zeros((range_len,))
+    for i, _ in enumerate(node_range):
+        mean_opt = np.mean(optimal_costs[i,:])
+        mean_opts[i] = mean_opt
+
+        std_opt = np.std(optimal_costs[i,:])
+        std_opts[i] = std_opt
+
+        mean_approx = np.mean(approx_costs[i,:])
+        mean_approxs[i] = mean_approx
+
+        std_approx = np.std(approx_costs[i,:])
+        std_approxs[i] = std_approx
+
+    plt.plot(node_range, mean_opts, c="g", label="Optimal")
+    plt.plot(node_range, mean_opts + std_opts, ls="--", c="g", label="Optimal (±1 std.)")
+    plt.plot(node_range, mean_opts - std_opts, ls="--", c="g")
+
+    plt.plot(node_range, mean_approxs, c="b", label="Algo")
+    plt.plot(node_range, mean_approxs + std_approxs, ls="--", c="b", label="Algo (±1 std.)")
+    plt.plot(node_range, mean_approxs - std_approxs, ls="--", c="b")
+
+    plt.xlabel("Size of Data (# Nodes)")
+    plt.ylabel("Cost")
+    plt.xlim(np.min(node_range)-0.5, np.max(node_range)+0.5)
+    plt.title(f"Optimal vs. Algo Costs for {graph_type} Graphs")
+    plt.legend(loc="upper left")
+    plt.show()
+
 def get_graph_by_type(graph_type: str, num_nodes: int, **kwargs) -> nx.Graph:
     if graph_type == "E-R":
         return nx.erdos_renyi_graph(n=num_nodes, **kwargs)
@@ -86,3 +145,5 @@ def get_graph_by_type(graph_type: str, num_nodes: int, **kwargs) -> nx.Graph:
         return nx.planted_partition_graph(**kwargs)
     elif graph_type == "Line":
         return nx.path_graph(n=num_nodes, **kwargs)
+    elif graph_type == "Barabási–Albert":
+        return nx.barabasi_albert_graph(n=num_nodes, **kwargs)
